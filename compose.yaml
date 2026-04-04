@@ -1,0 +1,7 @@
+﻿services:
+  musiccatalogue:
+    image: musiccatalogue
+    build:
+      context: .
+      dockerfile: MusicCatalogue/Dockerfile
+

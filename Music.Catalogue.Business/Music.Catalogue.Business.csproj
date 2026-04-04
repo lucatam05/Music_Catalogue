@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Music.Catalogue.Repository\Music.Catalogue.Repository.csproj" />
+      <ProjectReference Include="..\Music.Catalogue.Shared\Music.Catalogue.Shared.csproj" />
+    </ItemGroup>
+
+</Project>
