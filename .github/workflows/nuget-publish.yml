@@ -1,0 +1,28 @@
+name: Publish Music.Catalogue.ClientHttp NuGet
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'Music.Catalogue.ClientHttp/**'
+      - 'Music.Catalogue.Shared/**'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+          
+      - name: Restore
+        run: dotnet restore Music.Catalogue.ClientHttp/Music.Catalogue.ClientHttp.csproj
+          
+      - name: Pack
+        run: dotnet pack Music.Catalogue.ClientHttp/Music.Catalogue.ClientHttp.csproj --configuration Release --no-restore
+        
+      - name: Push to GitHub Packages
+        run: dotnet nuget push "Music.Catalogue.ClientHttp/bin/Release/*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/lucatam05/index.json"
