@@ -18,14 +18,15 @@ jobs:
         with:
           dotnet-version: '9.0.x'
           
-      - name: Restore
-        run: dotnet restore Music.Catalogue.ClientHttp/Music.Catalogue.ClientHttp.csproj
           
       - name: Pack Shared
         run: dotnet pack Music.Catalogue.Shared/Music.Catalogue.Shared.csproj --configuration Release
         
+      - name: Restore ClientHttp
+        run: dotnet restore Music.Catalogue.ClientHttp/Music.Catalogue.ClientHttp.csproj
+        
       - name: Pack ClientHttp
-        run: dotnet pack Music.Catalogue.ClientHttp/Music.Catalogue.ClientHttp.csproj --configuration Release --no-restore
+        run: dotnet pack Music.Catalogue.ClientHttp/Music.Catalogue.ClientHttp.csproj --configuration Release 
         
       - name: Push Shared
         run: dotnet nuget push "Music.Catalogue.Shared/bin/Release/*.nupkg" --source "https://nuget.pkg.github.com/lucatam05/index.json" --skip-duplicate --api-key ${{ secrets.NUGET_TOKEN }}
