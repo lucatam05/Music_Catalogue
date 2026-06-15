@@ -25,11 +25,7 @@ var db = scope.ServiceProvider.GetRequiredService<CatalogueDbContext>();
 db.Database.Migrate();
 
 app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mio Primo Microservizio V1");
-    c.RoutePrefix = "swagger"; // <-- così /swagger punta direttamente alla UI
-});
+app.UseSwaggerUI();
 
 app.UseAuthorization();
 
