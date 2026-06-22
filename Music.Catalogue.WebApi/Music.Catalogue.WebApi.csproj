@@ -23,12 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Music.Catalogue.Business\Music.Catalogue.Business.csproj" />
       <ProjectReference Include="..\Music.Catalogue.Shared\Music.Catalogue.Shared.csproj" />
     </ItemGroup>
