@@ -79,19 +79,8 @@ public class ClientHttp(HttpClient httpClient, IConfiguration configuration) : I
     
     public async Task<List<SongDTO>?> SearchCanzoniPerArtistaAsync(string artista, CancellationToken cancellationToken)
     { 
-        var url = $"Catalogue/GetCanzoniPerArtista?artista={Uri.EscapeDataString(artista)}";
-    
-        // 2. Usiamo GetAsync perché il controller ha l'attributo [HttpGet]
-        var response = await httpClient.GetAsync(url, cancellationToken);
-
-        // 3. Se il controller risponde con un errore (es. 503 o 404), lanciamo l'eccezione
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new SpotifyException("La richiesta verso Spotify non è andata a buon fine");
-        }
-
-        // 4. Se è un 200 OK, leggiamo la lista di canzoni JSON restituita dal controller
-        return await response.Content.ReadFromJsonAsync<List<SongDTO>>(cancellationToken: cancellationToken);
+        // Usa il metodo SearchAsync interno, applicando il filtro sul tag "artist" di Spotify
+        return await SearchAsync($"artist:{artista}", cancellationToken);
     }
     
     public async Task<List<SongDTO>?> SearchCanzoniPerAlbumAsync(string album, CancellationToken cancellationToken = default)
