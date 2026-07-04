@@ -19,11 +19,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddHttpClient<IClientHttp, ClientHttp>(client => 
-{ 
-    client.BaseAddress = new Uri(builder.Configuration["Spotify:SearchUrl"]!); 
-});
-
 var app = builder.Build();
 using var scope = app.Services.CreateScope();
 var db = scope.ServiceProvider.GetRequiredService<CatalogueDbContext>();
