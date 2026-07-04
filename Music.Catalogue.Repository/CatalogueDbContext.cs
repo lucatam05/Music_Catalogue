@@ -9,6 +9,11 @@ public class CatalogueDbContext(DbContextOptions<CatalogueDbContext> dbContextOp
     {
 
         modelBuilder.Entity<Songs>().HasKey(s => s.SpotifyId);
+        modelBuilder.Entity<Songs>()
+            .Property(u => u.DataUscita)
+            .HasConversion(
+                v => DateTime.SpecifyKind(v, DateTimeKind.Utc),
+                v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
         modelBuilder.Entity<Songs>().ToTable("Songs");
     }
     
