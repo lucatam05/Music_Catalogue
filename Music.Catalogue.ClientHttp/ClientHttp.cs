@@ -17,7 +17,7 @@ public class ClientHttp(HttpClient httpClient) : IClientHttp
     
     public async Task<List<SongDTO>?> SearchCanzoniPerArtistaAsync(string artista, CancellationToken cancellationToken = default)
     {
-        var response = await httpClient.GetAsync($"/Catalogue/GetCanzoniPerNome?artista={artista}", cancellationToken);
+        var response = await httpClient.GetAsync($"/Catalogue/GetCanzoniPerArtista?artista={artista}", cancellationToken);
         if (!response.IsSuccessStatusCode)
             return null;
     
