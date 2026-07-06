@@ -69,6 +69,7 @@ public class CatalogueController(IBusiness business) : ControllerBase
         }
     }
     [HttpGet(Name = "GetCanzonePerID")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public async Task<ActionResult> GetCanzonePerIdAsync(string id,
         CancellationToken cancellationToken = default)
     {
