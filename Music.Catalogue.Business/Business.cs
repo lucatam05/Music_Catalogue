@@ -16,14 +16,31 @@ public class Business(IRepository repository, IClientHttp clientHttp) : IBusines
     
     public async Task<List<SongDTO>?> GetCanzonePerNomeAsync(string titolo, CancellationToken cancellationToken)
     {
+        var canzoniDb = await repository.GetCanzonePerNomeAsync(titolo, cancellationToken);
+        if (canzoniDb != null && canzoniDb.Any())
+            return canzoniDb.Select(c => new SongDTO { 
+                SpotifyId = c.SpotifyId,
+                Titolo = c.Titolo,
+                Artista = c.Artista,
+                Album = c.Album,
+                DataUscita = c.DataUscita,
+                Durata = c.Durata}).ToList();
+        
         List<SongDTO>? canzoni = await clientHttp.SearchCanzoniAsync(titolo, cancellationToken);
         if (canzoni is null)
             throw new ModelNotFoundException("Canzone non trovata");
-
-        foreach (SongDTO canzone in canzoni)
+        
+        foreach (var canzone in canzoni)
         {
-            await InsertCanzoneAsync(canzone.SpotifyId, canzone.Titolo, canzone.Artista, canzone.Album,
-                canzone.DataUscita, canzone.Durata, cancellationToken);
+            var esistente = await repository.GetCanzonePerIDAsync(canzone.SpotifyId, cancellationToken);
+            if (esistente is null)
+                await InsertCanzoneAsync(canzone.SpotifyId,
+                    canzone.Titolo,
+                    canzone.Artista,
+                    canzone.Album,
+                    canzone.DataUscita,
+                    canzone.Durata,
+                    cancellationToken);
         }
 
         return canzoni;
@@ -32,14 +49,31 @@ public class Business(IRepository repository, IClientHttp clientHttp) : IBusines
     public async Task<List<SongDTO>?> GetCanzoniPerArtistaAsync(string artista,
         CancellationToken cancellationToken = default)
     {
+        var canzoniDb = await repository.GetCanzonePerArtistaAsync(artista, cancellationToken);
+        if (canzoniDb != null && canzoniDb.Any())
+            return canzoniDb.Select(c => new SongDTO { 
+                SpotifyId = c.SpotifyId,
+                Titolo = c.Titolo,
+                Artista = c.Artista,
+                Album = c.Album,
+                DataUscita = c.DataUscita,
+                Durata = c.Durata}).ToList();
+        
         List<SongDTO>? canzoni = await clientHttp.SearchCanzoniPerArtistaAsync(artista, cancellationToken);
         if (canzoni is null)
             throw new ModelNotFoundException("Artista non trovato");
         
-        foreach (SongDTO canzone in canzoni)
+        foreach (var canzone in canzoni)
         {
-            await InsertCanzoneAsync(canzone.SpotifyId, canzone.Titolo, canzone.Artista, canzone.Album,
-                canzone.DataUscita, canzone.Durata, cancellationToken);
+            var esistente = await repository.GetCanzonePerIDAsync(canzone.SpotifyId, cancellationToken);
+            if (esistente is null)
+                await InsertCanzoneAsync(canzone.SpotifyId,
+                    canzone.Titolo,
+                    canzone.Artista,
+                    canzone.Album,
+                    canzone.DataUscita,
+                    canzone.Durata,
+                    cancellationToken);
         }
 
         return canzoni;
@@ -48,14 +82,31 @@ public class Business(IRepository repository, IClientHttp clientHttp) : IBusines
     public async Task<List<SongDTO>?> GetCanzoniPerAlbumAsync(string album,
         CancellationToken cancellationToken = default)
     {
+        var canzoniDb = await repository.GetCanzonePerAlbumAsync(album, cancellationToken);
+        if (canzoniDb != null && canzoniDb.Any())
+            return canzoniDb.Select(c => new SongDTO { 
+                SpotifyId = c.SpotifyId,
+                Titolo = c.Titolo,
+                Artista = c.Artista,
+                Album = c.Album,
+                DataUscita = c.DataUscita,
+                Durata = c.Durata}).ToList();
+        
         List<SongDTO>? canzoni = await clientHttp.SearchCanzoniPerAlbumAsync(album, cancellationToken);
         if (canzoni is null)
             throw new ModelNotFoundException("Album non trovato");
         
-        foreach (SongDTO canzone in canzoni)
+        foreach (var canzone in canzoni)
         {
-            await InsertCanzoneAsync(canzone.SpotifyId, canzone.Titolo, canzone.Artista, canzone.Album,
-                canzone.DataUscita, canzone.Durata, cancellationToken);
+            var esistente = await repository.GetCanzonePerIDAsync(canzone.SpotifyId, cancellationToken);
+            if (esistente is null)
+                await InsertCanzoneAsync(canzone.SpotifyId,
+                    canzone.Titolo,
+                    canzone.Artista,
+                    canzone.Album,
+                    canzone.DataUscita,
+                    canzone.Durata,
+                    cancellationToken);
         }
 
         return canzoni;

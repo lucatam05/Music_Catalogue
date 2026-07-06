@@ -35,4 +35,18 @@ public class Repository(CatalogueDbContext catalogueDbContext) : IRepository
             .Where(s => s.Titolo.ToLower().Contains(titolo.ToLower()))
             .ToListAsync(cancellationToken);
     }
+    
+    public async Task<List<Songs>?> GetCanzonePerArtistaAsync(string artista, CancellationToken cancellationToken = default)
+    {
+        return await catalogueDbContext.SongsEnumerable
+            .Where(s => s.Titolo.ToLower().Contains(artista.ToLower()))
+            .ToListAsync(cancellationToken);
+    }
+    
+    public async Task<List<Songs>?> GetCanzonePerAlbumAsync(string album, CancellationToken cancellationToken = default)
+    {
+        return await catalogueDbContext.SongsEnumerable
+            .Where(s => s.Titolo.ToLower().Contains(album.ToLower()))
+            .ToListAsync(cancellationToken);
+    }
 }
