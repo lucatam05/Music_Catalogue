@@ -16,10 +16,7 @@ builder.Services.AddDbContext<CatalogueDbContext>(options =>
 builder.Services.AddScoped<IBusiness, Business>();
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddHttpClient<ISpotifyClient, SpotifyClient>();
-builder.Services.AddHttpClient<IClientHttp, ClientHttp>("CatalogueClient", client =>
-{
-    client.BaseAddress = new Uri(builder.Configuration["Services:Catalogue"]!);
-});
+builder.Services.AddHttpClient<IClientHttp, ClientHttp>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
