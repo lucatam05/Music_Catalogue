@@ -6,7 +6,7 @@ namespace Music.Catalogue.Repository;
 
 public class Repository(CatalogueDbContext catalogueDbContext) : IRepository
 {
-    public async Task<Songs?> GetCanzonePerIDAsync(string id, CancellationToken cancellationToken = default)
+    public async Task<Songs?> GetCanzonePerIdAsync(string id, CancellationToken cancellationToken = default)
     {
         return await catalogueDbContext.SongsEnumerable
             .FirstOrDefaultAsync(s => s.SpotifyId == id, cancellationToken);

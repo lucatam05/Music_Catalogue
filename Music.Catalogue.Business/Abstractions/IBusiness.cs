@@ -10,4 +10,6 @@ public interface IBusiness
     Task<List<SongDTO>?> GetCanzoniPerAlbumAsync(string album, CancellationToken cancellationToken = default);
 
     Task<List<SongDTO>?> GetCanzonePerNomeAsync(string titolo, CancellationToken cancellationToken = default);
+    
+    Task<SongDTO> GetCanzonePerIdAsync(string id, CancellationToken cancellationToken);
 }

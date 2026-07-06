@@ -68,4 +68,22 @@ public class CatalogueController(IBusiness business) : ControllerBase
             return StatusCode(503, ex.Message);
         }
     }
+    [HttpGet(Name = "GetCanzonePerID")]
+    public async Task<ActionResult> GetCanzonePerIdAsync(string id,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var canzone = await business.GetCanzonePerIdAsync(id, cancellationToken);
+            return Ok(canzone);
+        }
+        catch (ModelNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (SpotifyException ex)
+        {
+            return StatusCode(503, ex.Message);
+        }
+    }
 }

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Music.Catalogue.ClientHttp.JsonDeserialize;
+namespace Music.Catalogue.Spotify.JsonDeserialize;
 
 public class SpotifySong
 {
