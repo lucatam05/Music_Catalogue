@@ -26,7 +26,8 @@ public class SpotifyClient(HttpClient httpClient, IConfiguration configuration) 
         });
     
         var response = await httpClient.SendAsync(request, cancellationToken);
-        if (!response.IsSuccessStatusCode) return null;
+        if (!response.IsSuccessStatusCode) 
+            return null;
     
         var json = await response.Content.ReadAsStringAsync(cancellationToken);
         var tokenResponse = JsonSerializer.Deserialize<SpotifyToken>(json);
