@@ -28,11 +28,7 @@ var db = scope.ServiceProvider.GetRequiredService<CatalogueDbContext>();
 db.Database.Migrate();
 
 app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/v1/swagger.json", "API V1");
-    c.RoutePrefix = string.Empty;
-});
+app.UseSwaggerUI();
 app.UseAuthorization();
 app.MapControllers();
 
