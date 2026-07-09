@@ -28,11 +28,9 @@ var db = scope.ServiceProvider.GetRequiredService<CatalogueDbContext>();
 db.Database.Migrate();
 
 app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.RoutePrefix = string.Empty;
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Music.Catalogue.WebApi v1");
-});
+app.UseSwaggerUI();
+app.MapGet("/", () => Results.Redirect("/swagger"))
+    .ExcludeFromDescription();
 app.UseAuthorization();
 app.MapControllers();
 
