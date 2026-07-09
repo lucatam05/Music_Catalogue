@@ -31,6 +31,7 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.RoutePrefix = string.Empty;
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Music.Catalogue.WebApi v1");
 });
 app.UseAuthorization();
 app.MapControllers();
