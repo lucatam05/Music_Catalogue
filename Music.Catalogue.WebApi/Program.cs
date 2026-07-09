@@ -28,8 +28,11 @@ var db = scope.ServiceProvider.GetRequiredService<CatalogueDbContext>();
 db.Database.Migrate();
 
 app.UseSwagger();
-app.UseSwaggerUI();
-app.MapGet("/", () => Results.Redirect("/swagger"));
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+    c.RoutePrefix = string.Empty; // ← questa riga fa aprire Swagger sulla root "/"
+});
 app.UseAuthorization();
 app.MapControllers();
 
