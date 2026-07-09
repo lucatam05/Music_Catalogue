@@ -28,8 +28,10 @@ var db = scope.ServiceProvider.GetRequiredService<CatalogueDbContext>();
 db.Database.Migrate();
 
 app.UseSwagger();
-app.UseSwaggerUI();
-app.MapGet("/", () => Results.Redirect("/swagger"));
+app.UseSwaggerUI(c =>
+{
+    c.RoutePrefix = string.Empty;
+});
 app.UseAuthorization();
 app.MapControllers();
 
