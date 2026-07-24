@@ -1,5 +1,4 @@
 using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Music.Catalogue.Spotify.Abstractions;
@@ -9,34 +8,11 @@ using Music.Catalogue.Shared.Exceptions;
 
 namespace Music.Catalogue.Spotify;
 
-public class SpotifyClient(HttpClient httpClient, IConfiguration configuration) : ISpotifyClient
+public class SpotifyClient(HttpClient httpClient, IConfiguration configuration, ISpotifyTokenProvider spotifyTokenProvider) : ISpotifyClient
 {
-    private async Task<string?> GetTokenAsync(CancellationToken cancellationToken = default)
-    {
-        var clientId = configuration["Spotify:ClientId"];
-        var clientSecret = configuration["Spotify:ClientSecret"];
-    
-        var credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{clientId}:{clientSecret}"));
-    
-        var request = new HttpRequestMessage(HttpMethod.Post, configuration["Spotify:TokenUrl"]);
-        request.Headers.Authorization = new AuthenticationHeaderValue("Basic", credentials);
-        request.Content = new FormUrlEncodedContent(new[]
-        {
-            new KeyValuePair<string, string>("grant_type", "client_credentials")
-        });
-    
-        var response = await httpClient.SendAsync(request, cancellationToken);
-        if (!response.IsSuccessStatusCode) 
-            return null;
-    
-        var json = await response.Content.ReadAsStringAsync(cancellationToken);
-        var tokenResponse = JsonSerializer.Deserialize<SpotifyToken>(json);
-        return tokenResponse?.AccessToken;
-    }
-
     private async Task<List<SongDTO>?> SearchAsync(string query, CancellationToken cancellationToken)
     {
-        string? token = await GetTokenAsync(cancellationToken);
+        string? token = await spotifyTokenProvider.GetTokenAsync(cancellationToken);
         if (token is null) 
             throw new SpotifyException("La richiesta verso Spotify non è andata a buon fine");
 
@@ -90,7 +66,7 @@ public class SpotifyClient(HttpClient httpClient, IConfiguration configuration) 
 
     public async Task<SongDTO?> SearchCanzoniByIdSpotifyAsync(string id, CancellationToken cancellationToken)
     {
-        string? token = await GetTokenAsync(cancellationToken);
+        string? token = await spotifyTokenProvider.GetTokenAsync(cancellationToken);
         if (token is null) 
             throw new SpotifyException("La richiesta verso Spotify non è andata a buon fine");
 
