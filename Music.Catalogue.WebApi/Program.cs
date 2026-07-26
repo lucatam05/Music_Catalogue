@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Music.Catalogue.Business;
 using Music.Catalogue.Business.Abstractions;
@@ -6,6 +7,7 @@ using Music.Catalogue.ClientHttp.Abstractions;
 using Music.Catalogue.Repository;
 using Music.Catalogue.Repository.Abstractions;
 using MusicCatalogue;
+using MusicCatalogue.HealthChecks;
 using MusicCatalogue.Middlewares;
 using Serilog;
 
@@ -36,6 +38,10 @@ try
     builder.Services.AddSpotifyHttpClients();
     builder.Services.AddHttpClient<IClientHttp, ClientHttp>();
 
+    builder.Services.AddHealthChecks()
+        .AddDbContextCheck<CatalogueDbContext>("database")
+        .AddCheck<SpotifyHealthCheck>("spotify");
+
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
@@ -58,6 +64,13 @@ try
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseAuthorization();
+
+    app.MapHealthChecks("/health", new HealthCheckOptions
+        {
+            ResponseWriter = HealthCheckResponseWriter.WriteAsync
+        })
+        .AllowAnonymous();
+
     app.MapControllers();
 
     await app.RunAsync();
